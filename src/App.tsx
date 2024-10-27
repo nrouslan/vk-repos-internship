@@ -4,19 +4,22 @@ import { getNumericParameter } from "./helpers/getNumericParameter";
 import { getRepos } from "./API/getRepos";
 import { useFetch } from "./hooks/useFetch";
 import { getParameter } from "./helpers/getParameter";
+import { useSearchParams } from "./hooks/useSearchParams";
 
-interface SearchParams {
+// TODO: Разобраться, почему не подходит интерфейс
+
+type GetReposSearchParams = {
   query: string;
   page: number;
   per_page: number;
-}
+};
 
 function App() {
   const [repos, setRepos] = useState<GetReposResponseDto | null>(null);
 
   const searchParams = new URLSearchParams(window.location.search);
 
-  const [{ query, page, per_page }] = useState<SearchParams>({
+  const [{ query, page, per_page }] = useSearchParams<GetReposSearchParams>({
     query: getParameter(searchParams, "q", "javascript"),
     page: getNumericParameter(searchParams, "page", 1),
     per_page: getNumericParameter(searchParams, "per_page", 10),

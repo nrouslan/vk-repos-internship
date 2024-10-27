@@ -1,4 +1,6 @@
-// TODO: Покрыть тестами
+import { isNonNegativeInteger } from "./isNonNegativeInteger";
+
+// TODO: Покрыть Unit-тестами
 export function getNumericParameter(
   searchParams: URLSearchParams,
   name: string,
@@ -6,8 +8,7 @@ export function getNumericParameter(
 ) {
   const page = searchParams.get(name);
 
-  // TODO: Проверка на целое число
-  if (page) {
+  if (page && isNonNegativeInteger(page)) {
     return +page;
   } else {
     return defaultValue;
