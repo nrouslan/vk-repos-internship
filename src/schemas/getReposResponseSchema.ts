@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { GetRepoSchema } from "./GetRepoDto";
+import { GetRepoSchema } from "./getRepoSchema";
 
 export const GetReposResponseSchema = z.object({
   total_count: z.number(),

@@ -1,29 +1,33 @@
-import { useEffect, useState } from "react";
-import {
-  GetReposResponseDto,
-  GetReposResponseSchema,
-} from "./Schemas/GetReposResponseDto";
+import { useCallback, useState } from "react";
+import { GetReposResponseDto } from "./schemas/getReposResponseSchema";
+import { getNumericParameter } from "./helpers/getNumericParameter";
+import { getRepos } from "./API/getRepos";
+import { useFetch } from "./hooks/useFetch";
+import { getParameter } from "./helpers/getParameter";
+
+interface SearchParams {
+  query: string;
+  page: number;
+  per_page: number;
+}
 
 function App() {
   const [repos, setRepos] = useState<GetReposResponseDto | null>(null);
 
-  useEffect(() => {
-    fetch(
-      "https://api.github.com/search/repositories?q=javascript&sort=stars&page=1&per_page=10"
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        const { data, error } = GetReposResponseSchema.safeParse(json);
+  const searchParams = new URLSearchParams(window.location.search);
 
-        if (error) {
-          console.log(error);
-        } else {
-          setRepos(data);
-        }
-      });
-  }, []);
+  const [{ query, page, per_page }] = useState<SearchParams>({
+    query: getParameter(searchParams, "q", "javascript"),
+    page: getNumericParameter(searchParams, "page", 1),
+    per_page: getNumericParameter(searchParams, "per_page", 10),
+  });
 
-  console.log(repos);
+  useFetch(
+    useCallback(async () => {
+      const repos = await getRepos(query, page, per_page);
+      setRepos(repos);
+    }, [query, page, per_page])
+  );
 
   return repos ? (
     <>

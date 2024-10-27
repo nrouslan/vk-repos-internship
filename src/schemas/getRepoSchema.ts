@@ -3,7 +3,7 @@ import { z } from "zod";
 export const GetRepoSchema = z.object({
   id: z.number(),
   name: z.string(),
-  description: z.string(),
+  description: z.string().nullable(),
   created_at: z.string().datetime(),
 });
 
