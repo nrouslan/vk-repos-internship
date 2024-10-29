@@ -2,8 +2,7 @@
   padding: 1.5rem;
 }
 
-.repoList {
+.infiniteScroll {
   min-height: 35rem;
   max-height: 35rem;
-  overflow: scroll;
 }

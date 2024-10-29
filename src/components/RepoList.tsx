@@ -2,13 +2,17 @@ import { List, Tooltip } from "antd";
 import { GetRepoDto } from "../schemas/getRepoSchema";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import classNames from "classnames";
+import { forwardRef } from "react";
 
 interface Props {
   className?: string;
   repos: GetRepoDto[];
 }
 
-export function RepoList({ className, repos }: Props) {
+const RepoList = forwardRef<HTMLDivElement, Props>(function (
+  { className, repos },
+  ref
+) {
   const _className = classNames(className);
 
   return (
@@ -33,7 +37,9 @@ export function RepoList({ className, repos }: Props) {
           />
         </List.Item>
       )}
-      bordered={true}
+      ref={ref}
     />
   );
-}
+});
+
+export { RepoList };
