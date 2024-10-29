@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { Repo } from "../schemas/getRepoSchema";
 import { getRepos as fetchRepos } from "../API/getRepos";
 import { ZodError } from "zod";
@@ -20,10 +20,14 @@ class ReposStore {
 
       const { items, total_count } = await fetchRepos(query, page, perPage);
 
-      this.repos = [...this.repos, ...items];
-
-      this.totalCount = total_count;
+      runInAction(() => {
+        this.repos = [...this.repos, ...items];
+        this.totalCount = total_count;
+        this.isLoading = false;
+      });
     } catch (error) {
+      this.isLoading = false;
+
       if (error instanceof ZodError) {
         console.log(
           `An error while parsing the response occured: ${error.message}`
@@ -31,8 +35,6 @@ class ReposStore {
       } else {
         console.log(error);
       }
-    } finally {
-      this.isLoading = false;
     }
   };
 }

@@ -7,11 +7,18 @@ type NextFunction = () => void;
 interface Props extends PropsWithChildren {
   className?: string;
   next: NextFunction;
-  // loader: React.FC;
-  // endMessage: React.FC;
+  isLoading: boolean;
+  loader: React.ReactNode;
+  // endMessage: React.ReactNode;
 }
 
-export function InfiniteScroll({ className, next, children }: Props) {
+export function InfiniteScroll({
+  className,
+  next,
+  isLoading,
+  loader,
+  children,
+}: Props) {
   const _className = classNames(className, classes.infiniteScroll);
 
   const infiniteScrollRef = useRef<null | HTMLDivElement>(null);
@@ -39,6 +46,7 @@ export function InfiniteScroll({ className, next, children }: Props) {
   return (
     <div ref={infiniteScrollRef} className={_className}>
       {children}
+      {isLoading && loader}
     </div>
   );
 }
