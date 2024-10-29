@@ -1,16 +1,18 @@
-import { List, Tooltip } from "antd";
-import { GetRepoDto } from "../schemas/getRepoSchema";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import classNames from "classnames";
 import { forwardRef } from "react";
+import { List } from "antd";
+import { Repo } from "../schemas/getRepoSchema";
+import classNames from "classnames";
+import { RepoListItem } from "./RepoListItem";
 
 interface Props {
   className?: string;
-  repos: GetRepoDto[];
+  repos: Repo[];
+  onRemove: (id: number) => void;
+  onEdit: (repo: Repo) => void;
 }
 
 const RepoList = forwardRef<HTMLDivElement, Props>(function (
-  { className, repos },
+  { className, repos, onRemove, onEdit },
   ref
 ) {
   const _className = classNames(className);
@@ -20,22 +22,7 @@ const RepoList = forwardRef<HTMLDivElement, Props>(function (
       className={_className}
       dataSource={repos}
       renderItem={(repo) => (
-        <List.Item
-          key={repo.id}
-          actions={[
-            <Tooltip title="Редактировать">
-              <EditOutlined />
-            </Tooltip>,
-            <Tooltip title="Удалить">
-              <DeleteOutlined />
-            </Tooltip>,
-          ]}
-        >
-          <List.Item.Meta
-            title={<a href={repo.html_url}>{repo.name}</a>}
-            description={repo.description}
-          />
-        </List.Item>
+        <RepoListItem repo={repo} onEdit={onEdit} onRemove={onRemove} />
       )}
       ref={ref}
     />

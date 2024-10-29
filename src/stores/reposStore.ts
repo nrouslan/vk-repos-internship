@@ -37,6 +37,20 @@ class ReposStore {
       }
     }
   };
+
+  removeRepo = (id: number) => {
+    this.repos = this.repos.filter((repo) => repo.id !== id);
+  };
+
+  editRepo = (newRepo: Repo) => {
+    this.repos = this.repos.map((repo) => {
+      if (repo.id == newRepo.id) {
+        return newRepo;
+      } else {
+        return repo;
+      }
+    });
+  };
 }
 
 const repoStore = new ReposStore();
