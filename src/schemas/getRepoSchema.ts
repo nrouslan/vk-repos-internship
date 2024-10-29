@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const GetRepoSchema = z.object({
+export const RepoSchema = z.object({
   id: z.number(),
   name: z.string(),
   description: z.string().nullable(),
@@ -8,4 +8,4 @@ export const GetRepoSchema = z.object({
   html_url: z.string(),
 });
 
-export type GetRepoDto = z.infer<typeof GetRepoSchema>;
+export type Repo = z.infer<typeof RepoSchema>;

@@ -3,7 +3,7 @@ import {
   GetReposResponseSchema,
 } from "../schemas/getReposResponseSchema";
 
-export async function getReposData(
+export async function getRepos(
   query: string,
   page: number,
   per_page: number
